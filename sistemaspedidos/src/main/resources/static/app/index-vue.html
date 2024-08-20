@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página em VUE</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+    <div id="app">
+        <h1>{{mensagem}}</h1>
+        <h2>{{info}}</h2>
+        <br>
+        <form>
+            <input type="text" v-model="input_nome" placeholder="Qual o seu nome?"/>
+            <input type="submit" value="enviar" @click="submitForm"/>
+            <button type="submit" :disabled="isButtonDisabled">Button</button>
+        </form>
+        <br>
+        <p>Evento - Bem-vindo {{nome}} a nossa aula de VUE.</p>
+        <p>data Binding - Bem-vindo {{input_nome}} a nossa aula de VUE.</p>
+        <p v-if="!isButtonDisabled" ><span v-html="input_nome"></span></p>
+    </div>
+</body>
+<script>
+    const MyApp= {
+        data(){
+            return{ //area de dados - onde declaramos as variaveis que estarão disponiveis para ser ultilizada em toda pagina. 
+                mensagem : "Teste VUE!!",
+                info : "teste inicial do VUE.js",
+                input_nome : "",
+                nome :"",
+                isButtonDisabled : true
+            }  
+        },
+        methods:{
+            submitForm(e){
+                e.preventDefault();
+                console.log(e);
+                this.nome = this.input_nome;
+                this.isButtonDisabled = !this.isButtonDisabled;
+
+            }
+        }
+    }
+    Vue.createApp(MyApp).mount('#app')
+
+</script>
+</html>

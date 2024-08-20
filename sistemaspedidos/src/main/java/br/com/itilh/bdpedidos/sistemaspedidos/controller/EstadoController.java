@@ -27,20 +27,24 @@ public class EstadoController {
 
     @GetMapping("/estados")
     public List<Estado> getTodos() {
-        return (List<Estado>) repositorio.findAll();
+        return (List<Estado>) repositorio.findAll(); 
     }
     
     @GetMapping("/estado/{id}")
     public Estado getPorId(@PathVariable BigInteger id) throws Exception {
-        return repositorio.findById(id).orElseThrow(
-            () -> new Exception("ID inválido.")
-         );
+        return repositorio.findById (id).orElseThrow( 
+            ()-> new Exception("ID não encontrado para retorno")
+        );
     }    
 
     @PostMapping("/estado")
-    public Estado criarEstado(@RequestBody Estado entity){ 
-        return repositorio.save(entity);
-        
+    public Estado criarEstado(@RequestBody Estado entity) throws Exception{ 
+        try{
+             return repositorio.save(entity);
+        }catch(Exception e){
+           throw new Exception("Erro ao salvar o estado");
+        }
+       
     }
 
     @PutMapping("/estado/{id}")
@@ -53,19 +57,19 @@ public class EstadoController {
             estadoAmazenado.get().setNome(novosDados.getNome());
             //
             return repositorio.save(estadoAmazenado.get());
-        }        
-        throw new Exception("Alteração não foi realizada.");
+        }    
+        throw new Exception("Alteração não realizada.");   
     }
     
     @DeleteMapping("/estado/{id}")
-    public String deletePorId(@PathVariable BigInteger id) throws Exception {
+    public String deletePorId(@PathVariable BigInteger id) throws Exception{
 
         Optional<Estado> estadoAmazenado = repositorio.findById(id);
         if(estadoAmazenado.isPresent()){
             repositorio.delete(estadoAmazenado.get());
             return "Excluído";
         }
-        throw new Exception("Id não econtrado para a exclusão");
+        throw new Exception ("ID não encontrado para a exclusão");
     }    
     
     
